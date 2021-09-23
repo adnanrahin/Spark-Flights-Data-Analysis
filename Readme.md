@@ -1,6 +1,13 @@
 ## Airline Flights Data Analysis: Find all the information about cancelled and delayed. 
 
-### Here is the link to the original data from Kaggle: [Data Source](https://www.kaggle.com/usdot/flight-delays)
+### How to run program
+
+1. First Clone this repository ``git clone https://github.com/adnanrahin/Spark-Flights-Data-Analysis.git``
+2. Download the Data set from Kaggle: [Data Source](https://www.kaggle.com/usdot/flight-delays)
+3. After Downloading the dataset go to root of this repository ``~/Spark-Flight-Data-Analysis``
+4. Do ``mvn clean install``.
+5. If you are using Intellij or Eclipse pass an arguments variable where downloaded datasets are.
+6. If you are not running spark standalone cluster simply Compile and Run Should Spin up the program.
 
 #### 1. Find all the flight that cancelled in 2015
 ```
