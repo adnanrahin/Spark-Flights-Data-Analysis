@@ -3,6 +3,7 @@ package org.flight.analysis
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.storage.StorageLevel
 
 object FlightDelaysAndCancellations {
 
@@ -106,6 +107,7 @@ object FlightDelaysAndCancellations {
     val cancelledFlight =
       flightsRDD
         .filter(flight => flight.cancelled.equals("1"))
+        .persist(StorageLevel.MEMORY_ONLY_SER)
 
     cancelledFlight
   }
