@@ -9,6 +9,30 @@
 5. If you are using Intellij or Eclipse pass an arguments variable where downloaded datasets are.
 6. If you are not running spark standalone cluster simply Compile and Run Should Spin up the program.
 
+### Launching Applications with spark-submit
+
+```
+./bin/spark-submit \
+  --class <main-class> \
+  --master <master-url> \
+  --deploy-mode <deploy-mode> \
+  --conf <key>=<value> \
+  ... # other options
+  <application-jar> \
+  [application-arguments]
+  
+  spark-submit \
+  --class org.flight.analysis.FlightDelaysAndCancellations \
+  --master spark://ip_address(master):7077 \
+  --deploy-mode cluster \
+  --executor-memory 32G \
+  --total-executor-cores 24 \
+  --driver-memory 32G \
+  --driver-cores 24 \
+  spark-flights-data-analysis\target\spark-flights-data-analysis-1.0-SNAPSHOT.jar
+  spark-flights-data-analysis\2015_flights_data\
+```
+
 #### 1. Find all the flight that cancelled in 2015
 ```
 +-------+----------+-------------+------------------+-------------------+
