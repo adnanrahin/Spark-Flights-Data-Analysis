@@ -115,19 +115,19 @@ only showing top 5 rows
 +----------------------------+--------------+
 |Airline Names               |Total Distance|
 +----------------------------+--------------+
+|Southwest Airlines Co.      |924523336     |
+|American Airlines Inc.      |745699296     |
+|Delta Air Lines Inc.        |744626128     |
 |United Air Lines Inc.       |647702424     |
-|Virgin America              |86275456      |
+|Skywest Airlines Inc.       |288044533     |
+|JetBlue Airways             |279708698     |
+|Atlantic Southeast Airlines |257284318     |
+|Alaska Airlines Inc.        |206001530     |
 |US Airways Inc.             |178393656     |
 |American Eagle Airlines Inc.|118297439     |
-|Southwest Airlines Co.      |924523336     |
-|Delta Air Lines Inc.        |744626128     |
-|Skywest Airlines Inc.       |288044533     |
 |Spirit Air Lines            |113749628     |
-|Alaska Airlines Inc.        |206001530     |
-|American Airlines Inc.      |745699296     |
-|Hawaiian Airlines Inc.      |48160938      |
-|Atlantic Southeast Airlines |257284318     |
-|JetBlue Airways             |279708698     |
 |Frontier Airlines Inc.      |87302103      |
+|Virgin America              |86275456      |
+|Hawaiian Airlines Inc.      |48160938      |
 +----------------------------+--------------+
 ```
