@@ -131,3 +131,12 @@ only showing top 5 rows
 |Hawaiian Airlines Inc.      |48160938      |
 +----------------------------+--------------+
 ```
+#### Find Destination and origin airports that has maximum distance
+```
++----------------------------------------------------------------------+------------------------------+--------------+
+|Source Airport                                                        |Destination Airport           |Total Distance|
++----------------------------------------------------------------------+------------------------------+--------------+
+|John F. Kennedy International Airport (New York International Airport)|Honolulu International Airport|4983          |
++----------------------------------------------------------------------+------------------------------+--------------+
+
+```
