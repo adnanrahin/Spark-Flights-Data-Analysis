@@ -287,7 +287,6 @@ object FlightDelaysAndCancellations {
       .createDataFrame(List(airportNamesAndDistance))
       .toDF("Source Airport", "Destination Airport", "Total Distance")
       .show(5, truncate = false)
-
   }
 
   def findTotalDistanceFlownEachAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): Unit = {
@@ -299,7 +298,6 @@ object FlightDelaysAndCancellations {
       .createDataFrame(totalAirlineDistance)
       .toDF("Airline Names", "Total Distance")
       .show(truncate = false)
-
   }
 
   def showCancelledFlightInDataFrame(flightsRDD: RDD[Flight], spark: SparkSession): Unit = {
@@ -334,7 +332,6 @@ object FlightDelaysAndCancellations {
       .createDataFrame(List(numberOfDepartureFlightFromAirport))
       .toDF("Airport Name", "Total Number of Flight's")
       .show(truncate = false)
-
   }
 
   def findMostCancelledAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): Unit = {
@@ -355,7 +352,6 @@ object FlightDelaysAndCancellations {
       .createDataFrame(delayedAverage)
       .toDF("Airline Name", "Average Delay")
       .show(false)
-
   }
 
 }
