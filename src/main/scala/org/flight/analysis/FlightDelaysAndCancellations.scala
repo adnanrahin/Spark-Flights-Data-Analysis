@@ -269,7 +269,8 @@ object FlightDelaysAndCancellations {
 
     val airportPairRDD: RDD[(String, String)] =
       airportRDD
-        .filter(airport => airport.iataCode.equals(airportNamesAndDistance._1) || airport.iataCode.equals(airportNamesAndDistance._2))
+        .filter(airport => airport.iataCode.equals(airportNamesAndDistance._1)
+          || airport.iataCode.equals(airportNamesAndDistance._2))
         .map(airport => (airport.iataCode, airport.airport))
 
     val source: String = airportPairRDD.distinct().lookup(airportNamesAndDistance._1)(0)
