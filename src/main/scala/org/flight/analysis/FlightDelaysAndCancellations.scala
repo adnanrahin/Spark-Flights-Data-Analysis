@@ -53,12 +53,12 @@ object FlightDelaysAndCancellations {
     val airlineRDD: RDD[Airline] = loadAirlineToRDD(airlineCsv)
     val airportRDD: RDD[Airport] = loadAirportToRDD(airportCsv)
 
-    showCancelledFlightInDataFrame(flightsRDD, spark)
+/*    showCancelledFlightInDataFrame(flightsRDD, spark)
     airlinesCancelledNumberOfFlightsToDF(flightsRDD, spark, airlineRDD)
     findTotalNumberOfDepartureFlightFromAirportToDF(flightsRDD, airportRDD, "LGA", spark)
     findMostCancelledAirlineToDF(flightsRDD, airlineRDD, spark)
     findAverageDepartureDelayOfAirlinerToDF(flightsRDD, airlineRDD, spark)
-    findTotalDistanceFlownEachAirlineToDF(flightsRDD, airlineRDD, spark)
+    findTotalDistanceFlownEachAirlineToDF(flightsRDD, airlineRDD, spark)*/
     findOriginAndDestinationByMaxDistance(flightsRDD, airportRDD)
 
     spark.close()
@@ -213,7 +213,7 @@ object FlightDelaysAndCancellations {
 
   def findTotalDistanceFlownEachAirline(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline]): RDD[(String, Long)] = {
 
-    val airlineMap: RDD[(String, String)] = airlineRDD.map(airline => (airline.iataCode, airline.airlineName))
+    val airlinePairRDD: RDD[(String, String)] = airlineRDD.map(airline => (airline.iataCode, airline.airlineName))
 
     val totalAirlineDistance: RDD[(String, Long)] = flightsRDD
       .filter(_.cancelled.equals("0"))
@@ -225,7 +225,7 @@ object FlightDelaysAndCancellations {
 
     val leftOuterJoinRDD: RDD[(String, (Long, Option[String]))] =
       totalAirlineDistance
-        .leftOuterJoin(airlineMap)
+        .leftOuterJoin(airlinePairRDD)
 
     /**
      * NB: Output Data looks like in result
@@ -266,6 +266,15 @@ object FlightDelaysAndCancellations {
       .filter(flight => flight.diverted.equals("0"))
       .map(flight => (flight.originAirport, flight.destinationAirport, flight.distance.toLong))
       .max()(Ordering[Long].on(x => x._3))
+
+    val airportPairRDD: RDD[(String, String)] =
+      airportRDD
+        .filter(airport => airport.iataCode.equals(airportNames._1) || airport.iataCode.equals(airportNames._2))
+        .map(airport => (airport.iataCode, airport.airport))
+
+    println(airportNames)
+
+    airportPairRDD.foreach(println)
 
     airportNames
   }
