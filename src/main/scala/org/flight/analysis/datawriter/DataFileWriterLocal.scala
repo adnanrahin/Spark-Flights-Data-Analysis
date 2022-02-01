@@ -8,13 +8,10 @@ object DataFileWriterLocal {
 
     val destinationDirectory: String = dataPath + "/" + directoryName
 
-    println(destinationDirectory)
-
     dataFrame
       .write
       .mode(SaveMode.Overwrite)
       .parquet(destinationDirectory)
   }
-
 
 }
