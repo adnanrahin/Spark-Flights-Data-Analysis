@@ -1,5 +1,3 @@
 package org.flight.analysis.entity
 
-class Airline {
-
-}
+case class Airline(iataCode: String, airlineName: String)
