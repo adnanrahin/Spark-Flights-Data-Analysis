@@ -45,6 +45,7 @@ object FlightDataProcessor {
     val dataPath = args(1)
 
     args(1) match {
+
       case "1" => {
         val airlinesCancelledNumberOfFlights: DataFrame = {
           airlinesCancelledNumberOfFlightsToDF(flightsRDD, spark, airlineRDD)
@@ -53,14 +54,52 @@ object FlightDataProcessor {
           dataPath = dataPath,
           directoryName = "number_of_cancelled_flights")
       }
+
       case "2" => {
         val findTotalNumberOfDepartureFlightFromAirport: DataFrame = {
           findTotalNumberOfDepartureFlightFromAirportToDF(flightsRDD, airportRDD, "LGA", spark)
         }
         DataFileWriterLocal.dataWriter(dataFrame = findTotalNumberOfDepartureFlightFromAirport,
           dataPath = dataPath,
-          directoryName = "number_of_cancelled_flights")
+          directoryName = "find_total_number_departure_flight")
       }
+
+      case "3" => {
+        val findMostCancelledAirline: DataFrame = {
+          findMostCancelledAirlineToDF(flightsRDD, airlineRDD, spark)
+        }
+        DataFileWriterLocal.dataWriter(dataFrame = findMostCancelledAirline,
+          dataPath = dataPath,
+          directoryName = "find_most_cancelled_airline")
+      }
+
+      case "4" => {
+        val findAverageDepartureDelayOfAirliner: DataFrame = {
+          findAverageDepartureDelayOfAirlinerToDF(flightsRDD, airlineRDD, spark)
+        }
+        DataFileWriterLocal.dataWriter(dataFrame = findAverageDepartureDelayOfAirliner,
+          dataPath = dataPath,
+          directoryName = "find_average_departure_delay")
+      }
+
+      case "5" => {
+        val findTotalDistanceFlownEachAirline: DataFrame = {
+          findTotalDistanceFlownEachAirlineToDF(flightsRDD, airlineRDD, spark)
+        }
+        DataFileWriterLocal.dataWriter(dataFrame = findTotalDistanceFlownEachAirline,
+          dataPath = dataPath,
+          directoryName = "find_total_distance_flown")
+      }
+
+      case "6" => {
+        val findOriginAndDestinationByMaxDistance: DataFrame = {
+          findOriginAndDestinationByMaxDistanceToDF(flightsRDD, airportRDD, spark)
+        }
+        DataFileWriterLocal.dataWriter(dataFrame = findOriginAndDestinationByMaxDistance,
+          dataPath = dataPath,
+          directoryName = "find_origin_and_dest_by_max_distance")
+      }
+
       case _ => {
         try {
 
@@ -72,19 +111,6 @@ object FlightDataProcessor {
         }
       }
     }
-
-
-    val findMostCancelledAirlineTo: DataFrame =
-      findMostCancelledAirlineToDF(flightsRDD, airlineRDD, spark)
-
-    val findAverageDepartureDelayOfAirliner: DataFrame =
-      findAverageDepartureDelayOfAirlinerToDF(flightsRDD, airlineRDD, spark)
-
-    val findTotalDistanceFlownEachAirline: DataFrame =
-      findTotalDistanceFlownEachAirlineToDF(flightsRDD, airlineRDD, spark)
-    val findOriginAndDestinationByMaxDistance: DataFrame =
-      findOriginAndDestinationByMaxDistanceToDF(flightsRDD, airportRDD, spark)
-
 
     spark.close()
 
