@@ -5,7 +5,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
 
-object FlightDelaysAndCancellations {
+object FlightDataProcessor {
 
   Logger.getLogger("org").setLevel(Level.ERROR)
 
