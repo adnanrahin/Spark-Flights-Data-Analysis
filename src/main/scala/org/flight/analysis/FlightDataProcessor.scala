@@ -4,7 +4,7 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
-import org.flight.analysis.dataloader.FlightDataLoader
+import org.flight.analysis.dataloader.{AirlineDataLoader, FlightDataLoader}
 import org.flight.analysis.entity.{Airline, Airport, Flight}
 
 object FlightDataProcessor {
@@ -34,7 +34,10 @@ object FlightDataProcessor {
     val flightDataLoader: FlightDataLoader = new FlightDataLoader(dataSourcePath + "flights.csv", spark)
     val flightsRDD: RDD[Flight] = flightDataLoader.loadRDD()
 
-    val airlineRDD: RDD[Airline] = loadAirlineToRDD(airlineCsv)
+    val airlineDataLoader: AirlineDataLoader = new AirlineDataLoader(dataSourcePath + "airlines.csv", spark)
+    val airlineRDD: RDD[Airline] = airlineDataLoader.loadRDD()
+
+
     val airportRDD: RDD[Airport] = loadAirportToRDD(airportCsv)
 
     showCancelledFlightInDataFrame(flightsRDD, spark)
@@ -49,16 +52,6 @@ object FlightDataProcessor {
 
   }
 
-  def loadAirlineToRDD(airlineCSV: RDD[String]): RDD[Airline] = {
-    val airlineRDD: RDD[Airline] =
-      airlineCSV
-        .map(row => row.split(",", -1))
-        .map(str => Airline(str(0), str(1))).mapPartitionsWithIndex {
-        (idx, iter) => if (idx == 0) iter.drop(1) else iter
-      }
-
-    airlineRDD
-  }
 
   def loadAirportToRDD(airportCSV: RDD[String]): RDD[Airport] = {
     val airportRDD: RDD[Airport] =
