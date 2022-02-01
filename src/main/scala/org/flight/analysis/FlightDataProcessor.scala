@@ -4,7 +4,7 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
-import org.flight.analysis.dataloader.{AirlineDataLoader, FlightDataLoader}
+import org.flight.analysis.dataloader.{AirlineDataLoader, AirportDataLoader, FlightDataLoader}
 import org.flight.analysis.entity.{Airline, Airport, Flight}
 
 object FlightDataProcessor {
@@ -28,17 +28,14 @@ object FlightDataProcessor {
 
     val dataSourcePath = args(0)
 
-    val airlineCsv = sc.textFile(dataSourcePath + "airlines.csv")
-    val airportCsv = sc.textFile(dataSourcePath + "airports.csv")
-
     val flightDataLoader: FlightDataLoader = new FlightDataLoader(dataSourcePath + "flights.csv", spark)
     val flightsRDD: RDD[Flight] = flightDataLoader.loadRDD()
 
     val airlineDataLoader: AirlineDataLoader = new AirlineDataLoader(dataSourcePath + "airlines.csv", spark)
     val airlineRDD: RDD[Airline] = airlineDataLoader.loadRDD()
 
-
-    val airportRDD: RDD[Airport] = loadAirportToRDD(airportCsv)
+    val airportDataLoader: AirportDataLoader = new AirportDataLoader(dataSourcePath + "airports.csv", spark)
+    val airportRDD: RDD[Airport] = airportDataLoader.loadRDD()
 
     showCancelledFlightInDataFrame(flightsRDD, spark)
     airlinesCancelledNumberOfFlightsToDF(flightsRDD, spark, airlineRDD)
@@ -51,7 +48,6 @@ object FlightDataProcessor {
     spark.close()
 
   }
-
 
 
   def findAllTheFlightsGetCancelled(flightsRDD: RDD[Flight]): RDD[Flight] = {
