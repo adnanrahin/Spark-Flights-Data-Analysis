@@ -2,6 +2,7 @@ package org.flight.analysis.extract
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.storage.StorageLevel
 import org.flight.analysis.entity.{Airline, Flight}
 
 object AirlineDataExtract {
@@ -53,11 +54,12 @@ object AirlineDataExtract {
       }.sortBy(_._2, ascending = false)
       .map(f => (f._1.toString, f._2.toString))
 
-    result
+    result.persist(StorageLevel.MEMORY_AND_DISK)
 
   }
 
-  def findTotalDistanceFlownEachAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): DataFrame = {
+  def findTotalDistanceFlownEachAirlineToDF(flightsRDD: RDD[Flight],
+                                            airlineRDD: RDD[Airline], spark: SparkSession): DataFrame = {
 
     val totalAirlineDistance =
       findTotalDistanceFlownEachAirline(flightsRDD, airlineRDD)
@@ -69,7 +71,7 @@ object AirlineDataExtract {
   }
 
   private def findAverageDepartureDelayOfAirliner(flightRDD: RDD[Flight],
-                                                  airlineRDD: RDD[Airline]): List[(String, String)] = {
+                                                  airlineRDD: RDD[Airline]): RDD[(String, String)] = {
 
     def findAllTheSuccessDelayedFlights(flightRDD: RDD[Flight]): RDD[Flight] = flightRDD
       .filter(flight => flight.cancelled.equals("0") && flight.departureDelay.toInt > 0)
@@ -81,7 +83,7 @@ object AirlineDataExtract {
 
     val successDelayedFlights: RDD[Flight] = findAllTheSuccessDelayedFlights(flightRDD)
 
-    val averageOfAirliner: List[(String, String)] = successDelayedFlights
+    val averageOfAirliner: RDD[(String, String)] = successDelayedFlights
       .groupBy(_.airline)
       .map {
         airline =>
@@ -94,10 +96,9 @@ object AirlineDataExtract {
         }
     }.sortBy(_._2)
       .map(f => (f._1.toString, f._2.toString))
-      .collect()
-      .toList
 
-    averageOfAirliner
+
+    averageOfAirliner.persist(StorageLevel.MEMORY_AND_DISK)
 
   }
 

@@ -16,7 +16,8 @@ object FlightDataExtract {
     cancelledFlight
   }
 
-  private def findMaxFlightCancelledAirline(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline]): (String, String) = {
+  private def findMaxFlightCancelledAirline(flightsRDD: RDD[Flight],
+                                            airlineRDD: RDD[Airline]): (String, String) = {
 
     val cancelledFlightRDD: RDD[Flight] = findAllTheFlightsGetCancelled(flightsRDD)
 
@@ -35,7 +36,7 @@ object FlightDataExtract {
   }
 
   private def findAirlinesTotalNumberOfFlightsCancelled(cancelledFlight: RDD[Flight],
-                                                        airlineRDD: RDD[Airline]): List[(String, String)] = {
+                                                        airlineRDD: RDD[Airline]): RDD[(String, String)] = {
     val lookupMAP =
       airlineRDD
         .map(f => (f.iataCode, f.airlineName))
@@ -51,10 +52,8 @@ object FlightDataExtract {
             case None => ("Flight IATA Code is wrong", iter._2.toList.size.toString)
           }
         }
-        .collect()
-        .toList
 
-    airlinesCancelledFlights
+    airlinesCancelledFlights.persist(StorageLevel.MEMORY_AND_DISK)
   }
 
   def airlinesCancelledNumberOfFlightsToDF
