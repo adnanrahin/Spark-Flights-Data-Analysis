@@ -97,15 +97,16 @@ object AirlineDataExtract {
 
   }
 
-  def findAverageDepartureDelayOfAirlinerToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): Unit = {
+  def findAverageDepartureDelayOfAirlinerToDF(flightsRDD: RDD[Flight],
+                                              airlineRDD: RDD[Airline],
+                                              spark: SparkSession): DataFrame = {
 
     val delayedAverage = findAverageDepartureDelayOfAirliner(flightsRDD, airlineRDD)
 
     spark
       .createDataFrame(delayedAverage)
       .toDF("Airline Name", "Average Delay")
-      
-  }
 
+  }
 
 }
