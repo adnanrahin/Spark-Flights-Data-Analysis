@@ -41,7 +41,7 @@ object AirportDataExtract {
   private def findTotalNumberOfDepartureFlightFromAirport(flightsRDD: RDD[Flight],
                                                           airportRDD: RDD[Airport],
                                                           airportIataCode: String):
-  (String, Int) = {
+  (String, String) = {
 
     val airportMap = airportRDD
       .map(airport => (airport.iataCode, airport.airport))
@@ -52,13 +52,13 @@ object AirportDataExtract {
       flightsRDD
         .filter(flight => flight.cancelled.equals("0"))
 
-    val totalFlight: (String, Int) = notCancelledFlight
+    val totalFlight: (String, String) = notCancelledFlight
       .groupBy(flight => flight.originAirport)
       .filter(flight => flight._1.equals(airportIataCode))
       .map { flight =>
         airportMap.get(flight._1) match {
-          case Some(value) => (value, flight._2.toList.size)
-          case None => (flight._1, flight._2.toList.size)
+          case Some(value) => (value, flight._2.toList.size.toString)
+          case None => (flight._1, flight._2.toList.size.toString)
         }
       }
       .collect()

@@ -16,7 +16,7 @@ object FlightDataExtract {
     cancelledFlight
   }
 
-  private def findMaxFlightCancelledAirline(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline]): (String, Int) = {
+  private def findMaxFlightCancelledAirline(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline]): (String, String) = {
 
     val cancelledFlightRDD: RDD[Flight] = findAllTheFlightsGetCancelled(flightsRDD)
 
@@ -28,8 +28,8 @@ object FlightDataExtract {
       .sortBy(-_._2).collect().toList
 
     airlineRDDMap.get(maxCancelledAirliner.head._1) match {
-      case Some(value) => (value, maxCancelledAirliner.head._2)
-      case None => (s"No Such IATA Code ${maxCancelledAirliner.head._1}", maxCancelledAirliner.head._2)
+      case Some(value) => (value, maxCancelledAirliner.head._2.toString)
+      case None => (s"No Such IATA Code ${maxCancelledAirliner.head._1}", maxCancelledAirliner.head._2.toString)
     }
 
   }
