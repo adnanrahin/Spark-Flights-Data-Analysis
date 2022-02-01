@@ -5,7 +5,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
 import org.flight.analysis.entity.{Airline, Flight}
 
-class FlightDataExtract {
+object FlightDataExtract {
 
   private def findAllTheFlightsGetCancelled(flightsRDD: RDD[Flight]): RDD[Flight] = {
     val cancelledFlight =

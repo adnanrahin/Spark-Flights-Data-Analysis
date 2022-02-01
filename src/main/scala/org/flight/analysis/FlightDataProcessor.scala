@@ -6,6 +6,9 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
 import org.flight.analysis.dataloader.{AirlineDataLoader, AirportDataLoader, FlightDataLoader}
 import org.flight.analysis.entity.{Airline, Airport, Flight}
+import org.flight.analysis.extract.AirlineDataExtract.{findAverageDepartureDelayOfAirlinerToDF, findTotalDistanceFlownEachAirlineToDF}
+import org.flight.analysis.extract.AirportDataExtract.{findOriginAndDestinationByMaxDistanceToDF, findTotalNumberOfDepartureFlightFromAirportToDF}
+import org.flight.analysis.extract.FlightDataExtract.{airlinesCancelledNumberOfFlightsToDF, findMostCancelledAirlineToDF}
 
 object FlightDataProcessor {
 
@@ -18,10 +21,12 @@ object FlightDataProcessor {
      *  1. datasource: path
      * */
 
+    val sparkMasterNode: String = args(1) // spark://domain.com:7077
+
     val spark = SparkSession
       .builder()
       .appName("FlightDelaysAndCancellations")
-      .master("local[*]")
+      .master(sparkMasterNode)
       .getOrCreate()
 
     val sc = spark.sparkContext
@@ -37,7 +42,6 @@ object FlightDataProcessor {
     val airportDataLoader: AirportDataLoader = new AirportDataLoader(dataSourcePath + "airports.csv", spark)
     val airportRDD: RDD[Airport] = airportDataLoader.loadRDD()
 
-    showCancelledFlightInDataFrame(flightsRDD, spark)
     airlinesCancelledNumberOfFlightsToDF(flightsRDD, spark, airlineRDD)
     findTotalNumberOfDepartureFlightFromAirportToDF(flightsRDD, airportRDD, "LGA", spark)
     findMostCancelledAirlineToDF(flightsRDD, airlineRDD, spark)

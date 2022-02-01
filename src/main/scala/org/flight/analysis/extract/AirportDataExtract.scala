@@ -4,7 +4,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.flight.analysis.entity.{Airport, Flight}
 
-class AirportDataExtract {
+object AirportDataExtract {
 
   private def findOriginAndDestinationByMaxDistance(flightsRDD: RDD[Flight], airportRDD: RDD[Airport]): (String, String, Long) = {
 
