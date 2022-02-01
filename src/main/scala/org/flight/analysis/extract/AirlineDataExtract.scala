@@ -6,7 +6,8 @@ import org.flight.analysis.entity.{Airline, Flight}
 
 object AirlineDataExtract {
 
-  private def findTotalDistanceFlownEachAirline(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline]): RDD[(String, Long)] = {
+  private def findTotalDistanceFlownEachAirline(flightsRDD: RDD[Flight],
+                                                airlineRDD: RDD[Airline]): RDD[(String, String)] = {
 
     val airlinePairRDD: RDD[(String, String)] = airlineRDD.map(airline => (airline.iataCode, airline.airlineName))
 
@@ -50,6 +51,7 @@ object AirlineDataExtract {
           }
           (airlineName, airline._2._1)
       }.sortBy(_._2, ascending = false)
+      .map(f => (f._1.toString, f._2.toString))
 
     result
 
@@ -57,7 +59,7 @@ object AirlineDataExtract {
 
   def findTotalDistanceFlownEachAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): DataFrame = {
 
-    val totalAirlineDistance: RDD[(String, Long)] =
+    val totalAirlineDistance =
       findTotalDistanceFlownEachAirline(flightsRDD, airlineRDD)
 
     spark
@@ -66,7 +68,8 @@ object AirlineDataExtract {
 
   }
 
-  private def findAverageDepartureDelayOfAirliner(flightRDD: RDD[Flight], airlineRDD: RDD[Airline]): List[(String, Double)] = {
+  private def findAverageDepartureDelayOfAirliner(flightRDD: RDD[Flight],
+                                                  airlineRDD: RDD[Airline]): List[(String, String)] = {
 
     def findAllTheSuccessDelayedFlights(flightRDD: RDD[Flight]): RDD[Flight] = flightRDD
       .filter(flight => flight.cancelled.equals("0") && flight.departureDelay.toInt > 0)
@@ -78,7 +81,7 @@ object AirlineDataExtract {
 
     val successDelayedFlights: RDD[Flight] = findAllTheSuccessDelayedFlights(flightRDD)
 
-    val averageOfAirliner: List[(String, Double)] = successDelayedFlights
+    val averageOfAirliner: List[(String, String)] = successDelayedFlights
       .groupBy(_.airline)
       .map {
         airline =>
@@ -87,9 +90,10 @@ object AirlineDataExtract {
       airline =>
         airlineRDDMap.get(airline._1) match {
           case Some(value) => (value, airline._2 / airline._3)
-          case None => (s"No Such IATA Code ${airline._1}", airline._2 / airline._3)
+          case None => (s"No Such IATA Code ${airline._1}", (airline._2 / airline._3))
         }
     }.sortBy(_._2)
+      .map(f => (f._1.toString, f._2.toString))
       .collect()
       .toList
 
@@ -105,7 +109,7 @@ object AirlineDataExtract {
 
     spark
       .createDataFrame(delayedAverage)
-      .toDF("Airline Name", "Average Delay")
+      .toDF("Airline_Name", "Average_Delay")
 
   }
 

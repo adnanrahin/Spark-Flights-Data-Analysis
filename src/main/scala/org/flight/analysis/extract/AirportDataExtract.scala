@@ -7,7 +7,7 @@ import org.flight.analysis.entity.{Airport, Flight}
 object AirportDataExtract {
 
   private def findOriginAndDestinationByMaxDistance(flightsRDD: RDD[Flight],
-                                                    airportRDD: RDD[Airport]): (String, String, Long) = {
+                                                    airportRDD: RDD[Airport]): (String, String, String) = {
 
     val airportNamesAndDistance: (String, String, Long) = flightsRDD
       .filter(flight => flight.diverted.equals("0"))
@@ -23,14 +23,14 @@ object AirportDataExtract {
     val source: String = airportPairRDD.distinct().lookup(airportNamesAndDistance._1)(0)
     val destination: String = airportPairRDD.distinct().lookup(airportNamesAndDistance._2)(0)
 
-    (source, destination, airportNamesAndDistance._3)
+    (source, destination, airportNamesAndDistance._3.toString)
   }
 
   def findOriginAndDestinationByMaxDistanceToDF(flightsRDD: RDD[Flight],
                                                 airportRDD: RDD[Airport],
                                                 spark: SparkSession): DataFrame = {
 
-    val airportNamesAndDistance: (String, String, Long) =
+    val airportNamesAndDistance =
       findOriginAndDestinationByMaxDistance(flightsRDD, airportRDD)
 
     spark
