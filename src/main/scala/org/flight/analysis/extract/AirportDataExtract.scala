@@ -1,7 +1,7 @@
 package org.flight.analysis.extract
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.flight.analysis.entity.{Airport, Flight}
 
 object AirportDataExtract {
@@ -25,7 +25,7 @@ object AirportDataExtract {
     (source, destination, airportNamesAndDistance._3)
   }
 
-  def findOriginAndDestinationByMaxDistanceToDF(flightsRDD: RDD[Flight], airportRDD: RDD[Airport], spark: SparkSession): Unit = {
+  def findOriginAndDestinationByMaxDistanceToDF(flightsRDD: RDD[Flight], airportRDD: RDD[Airport], spark: SparkSession): DataFrame = {
 
     val airportNamesAndDistance: (String, String, Long) =
       findOriginAndDestinationByMaxDistance(flightsRDD, airportRDD)
@@ -33,7 +33,6 @@ object AirportDataExtract {
     spark
       .createDataFrame(List(airportNamesAndDistance))
       .toDF("Source Airport", "Destination Airport", "Total Distance")
-      .show(5, truncate = false)
   }
 
   private def findTotalNumberOfDepartureFlightFromAirport(flightsRDD: RDD[Flight], airportRDD: RDD[Airport], airportIataCode: String):
@@ -64,7 +63,7 @@ object AirportDataExtract {
   }
 
   def findTotalNumberOfDepartureFlightFromAirportToDF
-  (flightsRDD: RDD[Flight], airportRDD: RDD[Airport], airportIataCode: String, spark: SparkSession): Unit = {
+  (flightsRDD: RDD[Flight], airportRDD: RDD[Airport], airportIataCode: String, spark: SparkSession): DataFrame = {
 
     val numberOfDepartureFlightFromAirport =
       findTotalNumberOfDepartureFlightFromAirport(flightsRDD, airportRDD, airportIataCode)
@@ -72,7 +71,6 @@ object AirportDataExtract {
     spark
       .createDataFrame(List(numberOfDepartureFlightFromAirport))
       .toDF("Airport Name", "Total Number of Flight's")
-      .show(truncate = false)
   }
 
 }

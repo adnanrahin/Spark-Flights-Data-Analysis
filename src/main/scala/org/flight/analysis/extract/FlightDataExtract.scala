@@ -1,7 +1,7 @@
 package org.flight.analysis.extract
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.storage.StorageLevel
 import org.flight.analysis.entity.{Airline, Flight}
 
@@ -57,7 +57,7 @@ object FlightDataExtract {
   }
 
   def airlinesCancelledNumberOfFlightsToDF
-  (flightsRDD: RDD[Flight], spark: SparkSession, airlineRDD: RDD[Airline]): Unit = {
+  (flightsRDD: RDD[Flight], spark: SparkSession, airlineRDD: RDD[Airline]): DataFrame = {
 
     val cancelledFlight: RDD[Flight] = findAllTheFlightsGetCancelled(flightsRDD)
 
@@ -65,27 +65,26 @@ object FlightDataExtract {
 
     spark
       .createDataFrame(airlinesCancelledNumberOfFlights)
-      .toDF("Airline Names", "Total Number Of Flight's Cancelled").
-      show(truncate = false)
+      .toDF("Airline Names", "Total Number Of Flight's Cancelled")
   }
 
-  def showCancelledFlightInDataFrame(flightsRDD: RDD[Flight], spark: SparkSession): Unit = {
+  def showCancelledFlightInDataFrame(flightsRDD: RDD[Flight], spark: SparkSession): DataFrame = {
 
     val cancelledFlight: RDD[Flight] = findAllTheFlightsGetCancelled(flightsRDD)
 
     spark.createDataFrame(rdd = cancelledFlight)
       .select("airline", "tailNumber", "originAirport", "destinationAirport", "cancellationsReason")
-      .show(numRows = 5, truncate = false)
+
   }
 
-  def findMostCancelledAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): Unit = {
+  def findMostCancelledAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): DataFrame = {
 
     val mostCancelledAirline = findMaxFlightCancelledAirline(flightsRDD, airlineRDD)
 
     spark
       .createDataFrame(List(mostCancelledAirline))
       .toDF("Airline Name", "Total Number of Flight's")
-      .show(false)
+      
   }
 
 }

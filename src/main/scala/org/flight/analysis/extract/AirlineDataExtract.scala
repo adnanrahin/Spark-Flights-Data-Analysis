@@ -1,7 +1,7 @@
 package org.flight.analysis.extract
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.flight.analysis.entity.{Airline, Flight}
 
 object AirlineDataExtract {
@@ -55,7 +55,7 @@ object AirlineDataExtract {
 
   }
 
-  def findTotalDistanceFlownEachAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): Unit = {
+  def findTotalDistanceFlownEachAirlineToDF(flightsRDD: RDD[Flight], airlineRDD: RDD[Airline], spark: SparkSession): DataFrame = {
 
     val totalAirlineDistance: RDD[(String, Long)] =
       findTotalDistanceFlownEachAirline(flightsRDD, airlineRDD)
@@ -63,7 +63,7 @@ object AirlineDataExtract {
     spark
       .createDataFrame(totalAirlineDistance)
       .toDF("Airline Names", "Total Distance")
-      .show(truncate = false)
+
   }
 
   private def findAverageDepartureDelayOfAirliner(flightRDD: RDD[Flight], airlineRDD: RDD[Airline]): List[(String, Double)] = {
@@ -104,7 +104,7 @@ object AirlineDataExtract {
     spark
       .createDataFrame(delayedAverage)
       .toDF("Airline Name", "Average Delay")
-      .show(false)
+      
   }
 
 
