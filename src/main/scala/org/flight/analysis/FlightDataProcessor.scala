@@ -26,7 +26,7 @@ object FlightDataProcessor {
     val spark = SparkSession
       .builder()
       .appName("FlightDelaysAndCancellations")
-      .master("spark://ubuntu:7077")
+      .master("local[*]")
       .getOrCreate()
 
     val sc = spark.sparkContext
@@ -44,7 +44,7 @@ object FlightDataProcessor {
 
     val dataPath = args(1)
 
-    args(1) match {
+    args(2) match {
 
       case "1" => {
         val airlinesCancelledNumberOfFlights: DataFrame = {

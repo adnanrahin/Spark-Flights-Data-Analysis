@@ -34,7 +34,8 @@ object FlightDataExtract {
 
   }
 
-  private def findAirlinesTotalNumberOfFlightsCancelled(cancelledFlight: RDD[Flight], airlineRDD: RDD[Airline]): List[(String, Int)] = {
+  private def findAirlinesTotalNumberOfFlightsCancelled(cancelledFlight: RDD[Flight],
+                                                        airlineRDD: RDD[Airline]): List[(String, String)] = {
     val lookupMAP =
       airlineRDD
         .map(f => (f.iataCode, f.airlineName))
@@ -46,8 +47,8 @@ object FlightDataExtract {
         .groupBy(_.airline)
         .map { iter =>
           lookupMAP.get(iter._1) match {
-            case Some(value) => (value, iter._2.toList.size)
-            case None => ("Flight IATA Code is wrong", iter._2.toList.size)
+            case Some(value) => (value, iter._2.toList.size.toString)
+            case None => ("Flight IATA Code is wrong", iter._2.toList.size.toString)
           }
         }
         .collect()
@@ -65,7 +66,7 @@ object FlightDataExtract {
 
     spark
       .createDataFrame(airlinesCancelledNumberOfFlights)
-      .toDF("Airline Names", "Total Number Of Flight's Cancelled")
+      .toDF("Airline_Names", "Total_Number_Of_Flights_Cancelled")
   }
 
   def showCancelledFlightInDataFrame(flightsRDD: RDD[Flight], spark: SparkSession): DataFrame = {
@@ -83,7 +84,7 @@ object FlightDataExtract {
 
     spark
       .createDataFrame(List(mostCancelledAirline))
-      .toDF("Airline Name", "Total Number of Flight's")
+      .toDF("Airline_Name", "Total_Number_of_Flight's")
       
   }
 

@@ -35,7 +35,7 @@ object AirportDataExtract {
 
     spark
       .createDataFrame(List(airportNamesAndDistance))
-      .toDF("Source Airport", "Destination Airport", "Total Distance")
+      .toDF("Source_Airport", "Destination_Airport", "Total_Distance")
   }
 
   private def findTotalNumberOfDepartureFlightFromAirport(flightsRDD: RDD[Flight],
@@ -77,7 +77,7 @@ object AirportDataExtract {
 
     spark
       .createDataFrame(List(numberOfDepartureFlightFromAirport))
-      .toDF("Airport Name", "Total Number of Flight's")
+      .toDF("Airport_Name", "Total_Number_of_Flights")
   }
 
 }
