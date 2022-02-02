@@ -21,6 +21,8 @@ object FlightDataProcessor {
     /**
      * input parameters
      *  1. datasource: path
+     *  2. Give a filter_data path where spark job will write parquet files.
+     *  3. Give job parameters to decide which job run ex: 1 
      * */
 
     val spark = SparkSession
