@@ -66,7 +66,7 @@ object AirlineDataExtract {
 
     spark
       .createDataFrame(totalAirlineDistance)
-      .toDF("Airline Names", "Total Distance")
+      .toDF("Airline_Names", "Total_Distance")
 
   }
 
