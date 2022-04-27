@@ -2,7 +2,6 @@
 
 ### How to run program In Local Standalone Mode:
 
-```
 
 1. First Clone this repository ``git clone https://github.com/adnanrahin/Spark-Flights-Data-Analysis.git``
 2. Download the Data set from Kaggle: [Data Source](https://www.kaggle.com/usdot/flight-delays)
@@ -12,7 +11,6 @@
 6. If you are not running spark standalone cluster simply Compile and Run Should Spin up the program.
 
 ### Launching Applications with spark-submit
-
 ```
 ./bin/spark-submit \
   --class <main-class> \
@@ -33,7 +31,7 @@
   --driver-cores 24 \
   spark-flights-data-analysis\target\spark-flights-data-analysis-1.0-SNAPSHOT.jar
   spark-flights-data-analysis\2015_flights_data\
-
+```
 ### Running the program in Docker Container:
 
 
