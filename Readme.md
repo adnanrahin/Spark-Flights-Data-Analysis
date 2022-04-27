@@ -50,7 +50,7 @@
 8. Run this command to start interactive docker container mode: ``docker exec -it spark-flights-data-analysis_spark-master_1 /bin/bash``
 9. Run the program in the interactive shell: 
 ```
-./bin/spark-submit \
+./opt/spark/bin/spark-submit \
   --class org.flight.analysis.FlightDelaysAndCancellations \
   --master spark://spark-master:7077 \
   --deploy-mode cluster \
@@ -62,7 +62,7 @@
   /opt/spark-data/
 ```
 
-```
+
 #### 1. Find all the flight that cancelled in 2015
 ```
 +-------+----------+-------------+------------------+-------------------+
