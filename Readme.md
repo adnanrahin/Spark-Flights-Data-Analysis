@@ -1,6 +1,8 @@
 ## Airline Flights Data Analysis: Find all the information about cancelled and delayed. 
 
-### How to run program
+### How to run program In Local Standalone Mode:
+
+```
 
 1. First Clone this repository ``git clone https://github.com/adnanrahin/Spark-Flights-Data-Analysis.git``
 2. Download the Data set from Kaggle: [Data Source](https://www.kaggle.com/usdot/flight-delays)
@@ -31,8 +33,37 @@
   --driver-cores 24 \
   spark-flights-data-analysis\target\spark-flights-data-analysis-1.0-SNAPSHOT.jar
   spark-flights-data-analysis\2015_flights_data\
+
+### Running the program in Docker Container:
+
+
+1. First Clone this repository ``git clone 
+2. Download the Data set from Kaggle: [Data Source](https://www.kaggle.com/usdot/flight-delays)
+3. Put data-set to the directory name ``2015_flights_data``
+4. Build the Docker image: ``docker build -t cluster-apache-spark:3.0.2 .`
+5. Run `docker-compose up -d` to start the docker container.
+6. Once docker-compose is up and running, it will spin up the one master node and two worker node with bellow name
+```
+** Master: spark-flights-data-analysis_spark-master_1
+** Worker: spark-flights-data-analysis_spark-worker-a_1
+** Worker: spark-flights-data-analysis_spark-worker-c_1
+```
+6. Run this command to start interactive docker container mode: ``docker exec -it spark-flights-data-analysis_spark-master_1 /bin/bash``
+7. Run the program in the interactive shell: 
+```
+./bin/spark-submit \
+  --class org.flight.analysis.FlightDelaysAndCancellations \
+  --master spark://spark-master:7077 \
+  --deploy-mode cluster \
+  --executor-memory 32G \
+  --total-executor-cores 24 \
+  --driver-memory 32G \
+  --driver-cores 24 \
+  /opt/spark-apps/spark-flights-data-analysis-1.0-SNAPSHOT.jar
+  /opt/spark-data/
 ```
 
+```
 #### 1. Find all the flight that cancelled in 2015
 ```
 +-------+----------+-------------+------------------+-------------------+
