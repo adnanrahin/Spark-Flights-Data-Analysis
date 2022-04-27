@@ -62,6 +62,7 @@
   /opt/spark-data/
 ```
 
+### Sample Output:
 
 #### 1. Find all the flight that cancelled in 2015
 ```
