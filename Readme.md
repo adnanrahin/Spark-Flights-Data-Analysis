@@ -37,15 +37,15 @@
 
 1. First Clone this repository ``git clone https://github.com/adnanrahin/Spark-Flights-Data-Analysis.git``
 2. Download the Data set from Kaggle: [Data Source](https://www.kaggle.com/usdot/flight-delays)
-3. 4. Do ``mvn clean install``.
+3. Do `mvn clean install`.
 4. Put data-set to the directory name ``2015_flights_data``
-5. Build the Docker image: ``docker build -t cluster-apache-spark:3.0.2 .`
+5. Build the Docker image: `docker build -t cluster-apache-spark:3.0.2 .`
 6. Run `docker-compose up -d` to start the docker container.
 7. Once docker-compose is up and running, it will spin up the one master node and two worker node with bellow name
 ```
 ** Master: spark-flights-data-analysis_spark-master_1
 ** Worker: spark-flights-data-analysis_spark-worker-a_1
-** Worker: spark-flights-data-analysis_spark-worker-c_1
+** Worker: spark-flights-data-analysis_spark-worker-b_1
 ```
 8. Run this command to start interactive docker container mode: ``docker exec -it spark-flights-data-analysis_spark-master_1 /bin/bash``
 9. Run the program in the interactive shell: 
