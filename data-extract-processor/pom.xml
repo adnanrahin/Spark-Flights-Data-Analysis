@@ -30,9 +30,9 @@
                             <goal>add-source</goal>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
+                        <!--<configuration>
                             <jvmArgs>
-                                <jvmArg>-Xss4G</jvmArg>
+                                <jvmArg>-Xss2G</jvmArg>
                             </jvmArgs>
                             <args>
                                 <arg>-deprecation</arg>
@@ -41,12 +41,12 @@
                                 <arg>-language:implicitConversions</arg>
                                 <arg>-language:postfixOps</arg>
                             </args>
-                        </configuration>
+                        </configuration>-->
                     </execution>
                     <execution>
                         <goals>
                             <goal>testCompile</goal>
-                        </goals>
+                        </goals><!--
                         <configuration>
                             <jvmArgs>
                                 <jvmArg>-Xss2G</jvmArg>
@@ -58,7 +58,7 @@
                                 <arg>-language:implicitConversions</arg>
                                 <arg>-language:postfixOps</arg>
                             </args>
-                        </configuration>
+                        </configuration>-->
                     </execution>
                 </executions>
             </plugin>
