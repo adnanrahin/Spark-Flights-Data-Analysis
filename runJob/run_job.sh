@@ -2,7 +2,7 @@
 
 SPARK_HOME=$SPARK_HOME
 APP_JAR="/home/rahin/source-code/spark/Spark-Flights-Data-Analysis/data-extract-processor/target/data-extract-processor-1.0-SNAPSHOT.jar"
-INPUT_PATH="/sandbox/storage/data/flight-data/data-set"
+INPUT_PATH="/sandbox/storage/data/flight-data/data-set/"
 OUTPUT_PATH="/sandbox/storage/data/flight-data/filter_data/"
 PARTITIONS="2"
 
