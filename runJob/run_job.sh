@@ -13,8 +13,8 @@ $SPARK_HOME/bin/spark-submit \
     --name FlightDataProcessorSpark \
     --driver-memory 2G \
     --driver-cores 2 \
-    --executor-memory 2G \
-    --executor-cores 4 \
-    --total-executor-cores 8 \
+    --executor-memory 4G \
+    --executor-cores 8 \
+    --total-executor-cores 12 \
     $APP_JAR $INPUT_PATH $OUTPUT_PATH $PARTITIONS
 
